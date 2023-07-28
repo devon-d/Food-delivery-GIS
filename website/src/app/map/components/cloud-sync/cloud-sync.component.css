@@ -1,0 +1,25 @@
+.sync-menu {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #424242;
+  border-radius: 8px;
+}
+
+#sync-menu-content > p {
+  padding: 0;
+  margin: 8px 0;
+  color: white;
+}
+
+.sync-status-toggle-icon {
+  -webkit-animation: rotation 2s infinite linear;
+}
+
+@keyframes rotation {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(-359deg);
+  }
+}

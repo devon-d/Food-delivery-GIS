@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Select GCS Server</h2>
+<mat-dialog-content style="height: 65vh; max-height: 65vh;">
+  <div *ngIf="showProgress" class="full-screen-spinner">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+  <mat-selection-list #serverList id="server-list" [multiple]="false">
+    <mat-list-option *ngFor="let server of servers" [value]="server">
+      <mat-icon mat-list-icon>dns</mat-icon>
+      <div mat-line>{{server.name?.toUpperCase()}}</div>
+      <div mat-line> {{server.backend_url}} </div>
+    </mat-list-option>
+  </mat-selection-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="accent" (click)="onNegative()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onPositive()">Confirm</button>
+</mat-dialog-actions>

@@ -1,0 +1,39 @@
+<h1 mat-dialog-title>Editing Controls</h1>
+<mat-dialog-content class="mat-typography">
+  <h3>Polygons:</h3>
+  <ul>
+    <li><b>Left Click:</b> Adds new polygon point</li>
+    <li><b>Double Click:</b> Finishes polygon drawing</li>
+    <li><b>Esc Key:</b> Finishes drawing without adding point</li>
+    <li><b>Ctrl + Right Click:</b> Deletes polygon point</li>
+    <li><b>Right Click (on finished polygon):</b> Opens context menu</li>
+  </ul>
+
+  <h3>Building Points:</h3>
+  <ul>
+    <li><b>Left Click:</b> Selects the building</li>
+    <li><b>Left Click + Drag:</b> Selects the building and changes it's position</li>
+    <li><b>Enter Key:</b> Locks the selected building and moves to next building</li>
+    <li><b>Shift + Enter Key:</b> Unlocks the selected building</li>
+    <li><b>Space Key:</b> Locks the selected building</li>
+    <li><b>Ctrl + Left Click:</b> Adds new building on the map</li>
+    <li><b>Ctrl + Right Click:</b> Deletes the building</li>
+    <li><b>Left Arrow Key:</b> Selects previous point</li>
+    <li><b>Right Arrow Key:</b> Selects next point</li>
+  </ul>
+
+  <h3>Network:</h3>
+  <ul>
+    <li><b>Left Click:</b> Adds new point</li>
+    <li><b>Ctrl + Left Click (on existing network point):</b> Creates a new point and links it to existing segment</li>
+    <li><b>Double Click:</b> Completes current segment</li>
+    <li><b>Esc Key:</b> Finishes drawing without adding point</li>
+    <li><b>Right Click (on existing network point):</b> Open context menu</li>
+    <li><b>Ctrl + Right Click (on existing network point):</b> Deletes the point</li>
+  </ul>
+
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" [mat-dialog-close]="true">Got it!</button>
+</mat-dialog-actions>

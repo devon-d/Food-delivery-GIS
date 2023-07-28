@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>Settings</h2>
+<div mat-dialog-content>
+  <form [formGroup]="formGroup" (ngSubmit)="onPositive()" id="settings-form" #settingsForm>
+    <div class="input-container">
+      <h4>Flight Altitude</h4>
+      <mat-form-field floatLabel="always">
+        <mat-label></mat-label>
+        <input [formControlName]="'flightAltitude'" autocomplete="off" matInput placeholder="In meters">
+      </mat-form-field>
+    </div>
+
+    <div class="input-container">
+      <h4>Max Connector Distance</h4>
+      <mat-form-field floatLabel="always">
+        <mat-label></mat-label>
+        <input [formControlName]="'maxConnectorDistance'" autocomplete="off" matInput placeholder="In meters">
+      </mat-form-field>
+    </div>
+
+    <div class="input-container">
+      <h4>Delivery Clearance Radius</h4>
+      <mat-form-field floatLabel="always">
+        <mat-label></mat-label>
+        <input [formControlName]="'buildingRadius'" autocomplete="off" matInput placeholder="In meters">
+      </mat-form-field>
+    </div>
+
+    <mat-slide-toggle [formControlName]="'visualizeAltitude'" color="primary" labelPosition="before">
+      Show Altitude On Map
+    </mat-slide-toggle>
+
+<!--    <div class="input-container" style="margin-top: 14px">-->
+<!--      <h4>Layers to be shown in the 'layers' menu:</h4>-->
+<!--      <button type="button" mat-stroked-button color="accent" (click)="showAssets()">-->
+<!--        Select Layers-->
+<!--      </button>-->
+<!--    </div>-->
+  </form>
+</div>
+
+<div class="dialog-actions" mat-dialog-actions align="end">
+  <button mat-raised-button color="accent" (click)="onNegative()">Cancel</button>
+  <button mat-raised-button color="primary" type="submit" form="settings-form" [disabled]="!formGroup.valid">Save
+    Settings
+  </button>
+</div>

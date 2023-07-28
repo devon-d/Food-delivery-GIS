@@ -1,0 +1,38 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "check@123",
+    "database": "flytrex",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres",
+    "dialectOptions": {
+      "options": {
+        "useUTC": true,
+        "dateFirst": 1,
+        "trustServerCertificate": true
+      }
+    },
+    "define": {
+      "freezeTableName": true
+    }
+  },
+  "production": {
+    "username": "postgres",
+    "password": "check@123",
+    "database": "flytrex",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres",
+    "dialectOptions": {
+      "options": {
+        "useUTC": true,
+        "dateFirst": 1,
+        "trustServerCertificate": true
+      }
+    },
+    "define": {
+      "freezeTableName": true
+    }
+  }
+}

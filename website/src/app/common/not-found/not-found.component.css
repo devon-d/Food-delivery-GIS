@@ -1,0 +1,15 @@
+.text-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: #303030;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.text-container > h1 {
+  font-size: 100px;
+  letter-spacing: 10px;
+}

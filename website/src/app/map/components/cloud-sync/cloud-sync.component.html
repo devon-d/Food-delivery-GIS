@@ -1,0 +1,15 @@
+<div>
+  <button id="sync-status-toggle" mat-mini-fab color="accent" (click)="menuVisible = !menuVisible"
+          matTooltip="Sync Status">
+    <mat-icon [ngClass]="{'sync-status-toggle-icon' : syncUpdate.syncStatus === eSyncStatus.SYNCING}">sync</mat-icon>
+  </button>
+
+  <div *ngIf="menuVisible" class="sync-menu mat-elevation-z8">
+    <div mat-card-content id="sync-menu-content">
+      <p>Sync is <b>{{online ? 'Online' : 'Offline'}}</b></p>
+      <br>
+      <p><b>{{syncUpdate.syncStatus}}</b></p>
+      <p><b>{{syncUpdate.pendingCount}}</b> pending local changes</p>
+    </div>
+  </div>
+</div>

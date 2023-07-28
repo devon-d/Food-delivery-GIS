@@ -1,0 +1,38 @@
+#location-container > * {
+  display: inline;
+}
+
+#input-direction > ::ng-deep .mat-form-field-wrapper {
+  padding: 0 !important;
+  width: 70px;
+}
+
+.button-direction {
+  height: 60px;
+}
+
+#button-move {
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.input-container {
+  margin-top: 30px;
+  width: 100%;
+  align-items: center;
+  display: flex;
+}
+
+.input-container > * {
+  display: inline;
+  float: left;
+  margin-right: 20px;
+}
+
+.input-container > button {
+}
+
+.input-container > mat-form-field {
+}

@@ -1,0 +1,73 @@
+#projects-body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.projects-container {
+  width: 100%;
+  height: 100%;
+  background-color: #303030;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#project-list {
+  width: 100%;
+}
+
+#project-list > * {
+  width: 40%;
+  margin: 10px auto auto;
+  height: auto;
+}
+
+#project-list mat-card {
+  width: 100%;
+  border-radius: 10px;
+}
+
+#project-list mat-card > mat-card-actions {
+  float: right;
+  margin-top: 0;
+  padding-top: 0;
+  margin-bottom: 5px;
+}
+
+.mat-card-actions .mat-stroked-button:first-child {
+  margin: 0 8px !important;
+}
+
+#create-project-card {
+  height: auto;
+  margin-top: 10px;
+  border-color: #B0BEC4;
+  border-width: 2px;
+  border-style: dashed;
+}
+
+#create-project-card > div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.inline-list {
+  display: flex;
+}
+
+#create-project-card mat-form-field {
+  width: 100%;
+}
+
+a:link {
+  color: white;
+  text-decoration: none;
+}
+
+a:visited {
+  color: white;
+  text-decoration: none;
+}

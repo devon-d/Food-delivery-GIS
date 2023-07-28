@@ -1,0 +1,37 @@
+form {
+  overflow: hidden;
+}
+
+form > mat-slide-toggle {
+  width: 100%;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.input-container {
+  width: 100%;
+  display: flex;
+}
+
+.input-container > h4 {
+  margin-right: 20px;
+}
+
+.input-container > mat-form-field {
+  flex-grow: 1;
+}
+
+.input-container > button {
+  height: fit-content;
+  vertical-align: middle;
+  align-self: center;
+  flex: 1;
+}
+
+.dialog-actions {
+  margin-top: 30px;
+}
+
+::ng-deep .mat-slide-toggle-content {
+  width: 100%;
+}

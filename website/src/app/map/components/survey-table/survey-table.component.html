@@ -1,0 +1,89 @@
+<div #tableContainer class="survey-table-container">
+  <!-- Polygons Table -->
+  <h3 class="table-header">Polygons</h3>
+  <table #polygonsTable mat-table [dataSource]="polygonDataSource" class="mat-elevation-z8">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef> No.</th>
+      <td mat-cell *matCellDef="let survey; let i = index"> {{i + 1}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name</th>
+      <td mat-cell *matCellDef="let survey; let i = index"> {{"Polygon-" + (i + 1)}} </td>
+    </ng-container>
+
+    <!-- Points Column -->
+    <ng-container matColumnDef="points">
+      <th mat-header-cell *matHeaderCellDef> Points</th>
+      <td mat-cell *matCellDef="let survey; let i = index"> {{getBuildingsCount(survey)}} </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions</th>
+      <td mat-cell *matCellDef="let survey">
+        <button mat-button class="text-button" (click)="showPolygon(survey)" color="accent">Show</button>
+        <button mat-button class="text-button" [matMenuTriggerFor]="polygonMenu" color="accent">Query</button>
+        <button mat-button class="text-button" (click)="deletePolygon(survey)" color="accent">Delete</button>
+        <mat-menu #polygonMenu="matMenu">
+          <button mat-menu-item (click)="queryPolygon(survey, 'overpass')">
+            From OSM
+          </button>
+          <button mat-menu-item (click)="queryPolygon(survey, 'open-addresses')">
+            From OpenAddresses
+          </button>
+        </mat-menu>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="polygonColumns"></tr>
+    <tr mat-row *matRowDef="let survey; columns: polygonColumns;"></tr>
+  </table>
+
+  <!-- Points Table -->
+  <div class="table-header">
+    <h3 class="table-header-item">Locations</h3>
+    <button class="table-header-item" mat-icon-button color="{{allLocationsLocked ? 'primary' : 'accent'}}"
+            aria-label="Lock All Locations"
+            matTooltip="{{allLocationsLocked ? 'Unlock All Locations' : 'Lock All Locations'}}"
+            (click)="onLockToggled()">
+      <mat-icon>{{allLocationsLocked ? "lock" : "lock_open"}}</mat-icon>
+    </button>
+    <button class="table-header-item" mat-stroked-button color="accent" (click)="onFetchAddressClicked()">Fetch Missing
+      Addresses
+    </button>
+  </div>
+
+  <virtual-scroller #locationsList class="mat-elevation-z8" [parentScroll]="tableContainer"
+                    [items]="locationsDataSource"
+                    (vsUpdate)="locationsViewportItems = $event">
+    <table class="mat-table">
+      <tr class="mat-header-row">
+        <th class="mat-header-cell" *ngFor="let col of pointColumns">{{col}}</th>
+      </tr>
+      <tbody #container>
+      <tr class="mat-row" *ngFor="let item of locationsList.viewPortItems; let i = index" [id]="item.uuid">
+        <td class="mat-cell">{{locationsList.viewPortInfo.startIndex + i + 1}}</td>
+        <!-- Name Column -->
+        <td class="mat-cell" matTooltip="{{item.address}}" matTooltipPosition="after">{{item.address}}</td>
+        <!-- Status Column -->
+        <td class="mat-cell"> {{item.locked ? "Approved" : ""}} </td>
+        <!-- Actions Column -->
+        <td class="mat-cell">
+          <button class="text-button" *ngFor="let action of pointActions;" mat-button
+                  color="accent" (keydown.enter)="$event.preventDefault()" (keydown.space)="$event.preventDefault()"
+                  (click)="onLocationActionClicked(action, item)">{{action}}</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <!--    <mat-paginator #locationsPaginator [length]="locationsDataSource.data.length" [pageSize]="20" [pageSizeOptions]="[20, 30, 40]"-->
+    <!--                   showFirstLastButtons></mat-paginator>-->
+  </virtual-scroller>
+</div>

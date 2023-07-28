@@ -1,0 +1,24 @@
+<h2 mat-dialog-title style="margin-bottom: 0">Choose layers to be shown in 'layers' menu</h2>
+<h5 style="margin-top: 5px">(You can upload new assets from the Cesium Ion
+  <a href="https://cesium.com/ion/assets/"
+     target="_blank" style="color: white">control panel</a>)
+</h5>
+<mat-dialog-content style="height: 65vh; max-height: 65vh;">
+  <div *ngIf="showProgress" class="full-screen-spinner">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+  <mat-selection-list #assetList id="asset-list" [multiple]="true" (selectionChange)="selectAsset($event)">
+    <mat-list-option *ngFor="let asset of assets"
+                     [value]="asset"
+                     [selected]="asset.selected"
+                     color="primary">
+      <mat-icon mat-list-icon>{{getIconForAsset(asset)}}</mat-icon>
+      <div mat-line>{{asset.name?.toUpperCase()}}</div>
+      <div mat-line> {{asset.type}} </div>
+    </mat-list-option>
+  </mat-selection-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="accent" (click)="onNegative()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onPositive()">Confirm</button>
+</mat-dialog-actions>

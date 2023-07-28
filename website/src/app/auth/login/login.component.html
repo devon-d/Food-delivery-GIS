@@ -1,0 +1,30 @@
+<mat-progress-bar *ngIf="loginState.showProgress" class="login-progress" mode="indeterminate"></mat-progress-bar>
+
+<div class="login-container" fxLayout="column" fxLayoutAlign="center center">
+  <mat-card class="login-box">
+    <mat-card-header>
+      <h1>Log In</h1>
+    </mat-card-header>
+
+    <mat-card-subtitle>{{loginState.message}}</mat-card-subtitle>
+
+    <form [formGroup]="loginForm" (submit)="login()">
+      <mat-card-content>
+        <mat-form-field class="full-width-input" appearance="outline">
+          <mat-label>Username</mat-label>
+          <input id="username" formControlName="username" matInput>
+        </mat-form-field>
+        <mat-form-field class="full-width-input" appearance="outline">
+          <mat-label>Password</mat-label>
+          <input id="password" formControlName="password" matInput
+                 [type]="loginState.showPassword ? 'text' : 'password'">
+          <button type="button" mat-icon-button matSuffix (click)="loginState.showPassword = !loginState.showPassword">
+            <mat-icon>{{loginState.showPassword ? 'visibility' : 'visibility_off'}}</mat-icon>
+          </button>
+        </mat-form-field>
+      </mat-card-content>
+      <button type="submit" mat-raised-button color="primary" class="full-width-button">Log In</button>
+    </form>
+  </mat-card>
+
+</div>

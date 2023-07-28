@@ -1,0 +1,47 @@
+{
+  "name": "cesium-drawing",
+  "version": "1.0.0",
+  "private": true,
+  "nodemonConfig": {
+    "delay": 2000
+  },
+  "scripts": {
+    "postinstall": "cd website && yarn install",
+    "start": "node ./bin/www",
+    "dev": "concurrently \"nodemon\" \" cd website && yarn start\"",
+    "build": "cd website && yarn build && cd .. && cp -R website/dist/cesium-drawing/. public/ && mv public/index.html public/app.html",
+    "build:dev": "cd website && yarn build:dev && cd .. && cp -R website/dist/cesium-drawing/. public/ && mv public/index.html public/app.html",
+    "migrate": "sequelize db:migrate --env production",
+    "migrate:dev": "sequelize db:migrate --env development",
+    "migrate:env": "sequelize db:migrate --env",
+    "deploy": "pm2 stop fne && git pull origin main && yarn migrate && yarn install && yarn build && pm2 start fne",
+    "deploy:dev": "git pull origin main && yarn migrate:dev && yarn install && yarn build:dev && yarn start",
+    "import-addresses": "bash scripts/import_openaddresses.sh"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "bcryptjs": "^2.4.3",
+    "connect-session-sequelize": "^7.1.1",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~4.3.1",
+    "dotenv": "^8.2.0",
+    "express": "~4.17.1",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.17.0",
+    "git-last-commit": "^1.0.0",
+    "http-errors": "~1.8.0",
+    "morgan": "~1.10.0",
+    "node-cmd": "^4.0.0",
+    "nodemon": "^2.0.7",
+    "passport": "^0.4.1",
+    "passport-custom": "^1.1.1",
+    "passport-local": "^1.0.0",
+    "passport-local-htpasswd": "^0.1.1",
+    "pg": "^8.6.0",
+    "rxjs": "^7.0.1",
+    "sequelize": "^6.5.0",
+    "sequelize-cli": "^6.2.0",
+    "tedious": "^11.0.5"
+  }
+}

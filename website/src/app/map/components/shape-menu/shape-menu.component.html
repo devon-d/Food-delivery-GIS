@@ -1,0 +1,12 @@
+<div (keydown.enter)="$event.preventDefault()">
+  <mat-menu #shapeMenu="matMenu">
+    <button mat-menu-item *ngFor="let item of items; let i = index" (click)="menuItemClicked(i)">
+      {{item}}
+    </button>
+  </mat-menu>
+  <button id="shapeMenuContainer" #shapeMenuContainer
+          [style.left.px]="anchorPosition.left"
+          [style.top.px]="anchorPosition.top"
+          [matMenuTriggerFor]="shapeMenu">
+  </button>
+</div>

@@ -1,0 +1,32 @@
+<div id="network-errors-container" [ngClass]="{'border-top-success' : success(), 'border-top-error' : !success()}">
+  <mat-card id="network-errors-card" class="mat-elevation-z0">
+    <div mat-card-content>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center">
+        <h2 [ngClass]="{'text-success' : success(), 'text-error' : !success()}"
+            fxFlex="50%">{{getTitle()}}</h2>
+        <mat-paginator [style.visibility]="success()? 'hidden': 'visible'" #errorPaginator fxFlex="50%" hidePageSize
+                       [length]="errors.length"
+                       [pageSize]="1"
+                       (page)="changePage($event)">
+        </mat-paginator>
+      </div>
+
+      <div *ngIf="currentError" fxLayout="row" fxLayoutAlign="space-between">
+        <p style="text-align: start">{{parsedDescription}}</p>
+        <div id="network-error-actions" fxLayout="row">
+          <button *ngIf="currentError.node_ids.length > 0 || currentError.edge_ids >0" mat-icon-button
+                  matTooltip="Highlight Error" (click)="highlightErrorEvent.emit(currentError)">
+            <mat-icon>center_focus_strong</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Mark as Fixed" (click)="markErrorAsFixed()">
+            <mat-icon>check</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="success()" fxLayout="row" fxLayoutAlign="space-between">
+        <p style="text-align: start">{{this.successMessage}}</p>
+      </div>
+    </div>
+  </mat-card>
+</div>

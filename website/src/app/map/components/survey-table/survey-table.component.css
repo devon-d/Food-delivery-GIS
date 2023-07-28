@@ -1,0 +1,88 @@
+.survey-table-container {
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+}
+
+.text-button {
+  min-width: 0;
+  padding: 0;
+  margin-right: 10px;
+}
+
+.mat-elevation-z8 {
+  box-shadow: 0 0;
+}
+
+.table-header {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-content: stretch;
+  align-content: stretch;
+}
+
+.table-header-item:nth-child(1) {
+  -ms-flex-order: 0;
+  order: 0;
+  -webkit-flex: 0 1 auto;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
+  -webkit-align-self: auto;
+  align-self: auto;
+}
+
+.table-header-item:nth-child(2) {
+  -ms-flex-order: 0;
+  order: 0;
+  -webkit-flex: 0 1 auto;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
+  margin-left: auto;
+  -webkit-align-self: auto;
+  align-self: auto;
+}
+
+.selected-row {
+  background: grey;
+}
+
+#logout {
+  margin-right: 20px;
+  transform: scaleX(-1);
+}
+
+table {
+  width: 100%;
+  box-shadow: 0 0;
+}
+
+h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 0;
+}
+
+th.mat-header-cell {
+  padding: 10px;
+}
+
+td.mat-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 225px;
+  padding: 10px;
+}

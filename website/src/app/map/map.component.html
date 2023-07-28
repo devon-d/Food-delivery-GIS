@@ -1,0 +1,219 @@
+<div class="container">
+  <!-- BODY -->
+  <mat-drawer-container>
+    <!--  Side Drawer  -->
+    <mat-drawer class="sidenav" #sidenav mode="side" opened>
+      <div class="sidenav-header mat-elevation-z3">
+        <button id="back" mat-icon-button color="accent" matTooltip="Go Back to Projects"
+                (click)="onBackClicked()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h3>{{projectData?.name}}</h3>
+        <span class="sidenav-header-spacer"></span>
+        <button id="logout" mat-icon-button color="accent" matTooltip="Logout" (click)="onLogoutClicked()">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
+      <app-survey-table class="survey-table" [mapService]="cesiumService"></app-survey-table>
+    </mat-drawer>
+
+    <!--  Main Content  -->
+    <mat-drawer-content [style.overflow]="'hidden'">
+      <div class="main-content" fxLayout="column">
+        <!-- Map -->
+        <ac-map class="map" fxFlex="{{networkErrorViewer.isHidden ? '100%' : 'calc(100%-200px)'}}">
+          <ac-map-terrain-provider
+            [provider]="MapTerrainProviderOptions.WorldTerrain"></ac-map-terrain-provider>
+
+          <!--Polygons Layer-->
+          <app-polygon-layer #polygonLayer (finishEvent)="stopDrawing()"></app-polygon-layer>
+
+          <!--Survey Layer-->
+          <app-survey-layer #surveyLayers *ngFor="let survey of getSurveys(); trackBy:trackSurveysBy"
+                            [survey]="survey" [mouseEvents]="mouseEvents"
+                            [show]="mapProps.showSurveys"
+                            [enablePolygonMenu]="mapProps.drawingType == null"
+                            [editablePolygon]="mapProps.drawingType === eDrawingType.POLYGON"
+                            [editablePoints]="mapProps.drawingType === eDrawingType.POINTS">
+          </app-survey-layer>
+
+          <!--Network Layer-->
+          <app-network-layer #networkLayer [mouseEvents]="mouseEvents"></app-network-layer>
+
+          <!--Measure Tool-->
+          <app-measure-tool [measuring]="mapProps.measureType"></app-measure-tool>
+
+          <!-- Bottom Toolbar -->
+          <div class="toolbar-container" [ngStyle]="{'bottom': getToolbarBottom()}">
+            <!-- Toolbar -->
+            <mat-card class="editor-toolbar">
+              <!--drawing buttons-->
+              <button mat-mini-fab *ngIf="!isInDrawingMode()" [matMenuTriggerFor]="menuDrawing"
+                      [disabled]="isInMeasureMode()"
+                      matTooltip="Edit"
+                      color="accent">
+                <mat-icon>mode</mat-icon>
+              </button>
+              <button mat-mini-fab *ngIf="isInDrawingMode()" (click)="stopDrawing()"
+                      matTooltip="Stop Editing"
+                      color="primary">
+                <mat-icon>done</mat-icon>
+              </button>
+
+              <!--editing button-->
+              <button mat-mini-fab *ngIf="!isInMeasureMode()"
+                      [disabled]="isInDrawingMode()"
+                      (click)="startMeasuring(eMeasureType.LINE)"
+                      matTooltip="Measure"
+                      color="accent">
+                <mat-icon>straighten</mat-icon>
+              </button>
+              <button mat-mini-fab *ngIf="isInMeasureMode()"
+                      (click)="stopMeasuring()"
+                      matTooltip="Stop Measuring"
+                      color="primary">
+                <mat-icon>done</mat-icon>
+              </button>
+
+              <button mat-mini-fab [matMenuTriggerFor]="menu" matTooltip="Toggle Layers" color="accent">
+                <mat-icon>layers</mat-icon>
+              </button>
+              <button mat-mini-fab (click)="polygonLayer.flyToPolygons()"
+                      [disabled]="getSurveys().length == 0"
+                      matTooltip="Find Polygons" color="accent">
+                <mat-icon>center_focus_strong</mat-icon>
+              </button>
+
+              <!--export buttons-->
+              <button mat-mini-fab *ngIf="networkErrorViewer.isHidden" [matMenuTriggerFor]="menuExport"
+                      matTooltip="Export"
+                      color="accent">
+                <mat-icon>download</mat-icon>
+              </button>
+              <button mat-mini-fab *ngIf="!networkErrorViewer.isHidden"
+                      (click)="networkErrorViewer.dismiss()"
+                      matTooltip="Close Validation Window"
+                      color="primary">
+                <mat-icon>done</mat-icon>
+              </button>
+
+              <!--import buttons-->
+              <button mat-mini-fab ngxFilePicker [readMode]="eReadMode.text"
+                      (filePick)="surveyStore.importSurveysFromGeoJSON($event)"
+                      accept=".json, .geojson" matTooltip="Import"
+                      color="accent">
+                <mat-icon>publish</mat-icon>
+              </button>
+            </mat-card>
+          </div>
+        </ac-map>
+        <!-- Error Viewer -->
+        <app-network-error-viewer fxFlex="200px" #networkErrorViewer
+                                  [validationErrors]="validationErrors.asObservable()"
+                                  [exportError]="exportErrorSubject.asObservable()"
+                                  (highlightErrorEvent)="highlightError($event)"
+                                  (dismissEvent)="removeErrorHighlights()">
+        </app-network-error-viewer>
+      </div>
+
+      <!-- Progress Bar -->
+      <div *ngIf="showProgress" class="full-screen-spinner">
+        <mat-spinner diameter="70"></mat-spinner>
+      </div>
+
+      <!-- Left floating buttons  -->
+      <div class="controls-left">
+        <button id="sidebar-toggle" mat-mini-fab color="accent" (click)="sidenav.toggle()">
+          <mat-icon>{{sidenav.opened ? "close" : "menu"}}</mat-icon>
+        </button>
+        <button mat-mini-fab color="accent" (click)="onHelpClicked()">
+          <mat-icon>help</mat-icon>
+        </button>
+        <app-cloud-sync #cloudSync></app-cloud-sync>
+      </div>
+
+      <!-- Message Alert -->
+      <app-message-alert [error$]="errorMsgSubject.asObservable()"
+                         [success$]="successMsgSubject.asObservable()"></app-message-alert>
+    </mat-drawer-content>
+  </mat-drawer-container>
+
+  <!-- Layers Menu -->
+  <mat-menu #menu="matMenu">
+    <h4 *ngIf="getLayersByType(eLayerType.IMAGERY).length > 0">Imagery</h4>
+    <div mat-menu-item *ngFor="let layer of getLayersByType(eLayerType.IMAGERY);">
+      <mat-checkbox color="primary" (click)="$event.stopPropagation()"
+                    [checked]="layer.enabled"
+                    [disabled]="layer.global && layer.enabled"
+                    (change)="toggleLayer(layer, $event.checked)">
+        {{layer.name}}
+      </mat-checkbox>
+    </div>
+    <h4 *ngIf="getLayersByType(eLayerType.GEOJSON).length > 0">Vector</h4>
+    <div mat-menu-item *ngFor="let layer of getLayersByType(eLayerType.GEOJSON);">
+      <mat-checkbox color="primary" (click)="$event.stopPropagation()"
+                    [checked]="layer.enabled"
+                    [disabled]="layer.global && layer.enabled"
+                    (change)="toggleLayer(layer, $event.checked)">
+        {{layer.name}}
+      </mat-checkbox>
+    </div>
+    <h4 *ngIf="getLayersByType(eLayerType.TILES).length > 0">3D Tiles</h4>
+    <div mat-menu-item *ngFor="let layer of getLayersByType(eLayerType.TILES);">
+      <mat-checkbox color="primary" (click)="$event.stopPropagation()"
+                    [checked]="layer.enabled"
+                    [disabled]="layer.global && layer.type === eLayerType.IMAGERY && layer.enabled"
+                    (change)="toggleLayer(layer, $event.checked)">
+        {{layer.name}}
+      </mat-checkbox>
+    </div>
+    <h4>Others</h4>
+    <button mat-menu-item (click)="showProjectLayers()">
+      Choose...
+    </button>
+  </mat-menu>
+
+  <!-- Drawing Menu -->
+  <mat-menu #menuDrawing="matMenu">
+    <button mat-menu-item (click)="startDrawing(eDrawingType.POLYGON)">
+      <mat-icon>change_history</mat-icon>
+      <span>Edit Polygon</span>
+    </button>
+    <button mat-menu-item (click)="startDrawing(eDrawingType.NETWORK)">
+      <mat-icon>timeline</mat-icon>
+      <span>Edit Network</span>
+    </button>
+    <button mat-menu-item (click)="startDrawing(eDrawingType.POINTS)">
+      <mat-icon>radio_button_checked</mat-icon>
+      <span>Edit Points</span>
+    </button>
+    <button mat-menu-item (click)="linkBuildings()">
+      <mat-icon>business</mat-icon>
+      <span>Link Points</span>
+    </button>
+    <button mat-menu-item (click)="openProjectSettings()">
+      <mat-icon>settings</mat-icon>
+      <span>Settings...</span>
+    </button>
+  </mat-menu>
+
+  <!-- Export Menu -->
+  <mat-menu #menuExport="matMenu">
+    <button mat-menu-item (click)="validateFlightNetwork()">
+      <mat-icon>grading</mat-icon>
+      <span>Validate</span>
+    </button>
+    <button mat-menu-item (click)="exportFlightNetworkToGCS()">
+      <mat-icon>dns</mat-icon>
+      <span>Send to GCS</span>
+    </button>
+    <button mat-menu-item (click)="exportSurveys()">
+      <mat-icon>download</mat-icon>
+      <span>Export GeoJson</span>
+    </button>
+    <button mat-menu-item (click)="exportFlightNetwork()">
+      <mat-icon>download</mat-icon>
+      <span>Export Flight Network</span>
+    </button>
+  </mat-menu>
+</div>

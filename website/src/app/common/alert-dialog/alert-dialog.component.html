@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>{{data.title}}</h2>
+<div mat-dialog-content>
+  <p>{{data.msg}}</p>
+  <mat-form-field class="dialog-input" *ngIf="data.showInput">
+    <label>
+      <input autocomplete="off" matInput [(ngModel)]="inputText">
+    </label>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-raised-button color="accent" (click)="onNegative()">{{data.negativeText}}</button>
+  <button mat-raised-button color="primary" (click)="onPositive()">{{data.positiveText}}</button>
+</div>

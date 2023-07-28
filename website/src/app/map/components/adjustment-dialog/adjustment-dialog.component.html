@@ -1,0 +1,59 @@
+<div align="right">
+  <button mat-icon-button color="accent" (click)="onNegative()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<h2 mat-dialog-title>Adjust position</h2>
+<div mat-dialog-content>
+  <div id="location-container">
+    <h4>Latitude: </h4>{{data.location.lat?.toFixed(7)}}
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <h4>Longitude: </h4>{{data.location.lon?.toFixed(7)}}
+  </div>
+
+  <form>
+    <div class="input-container">
+      <h4>Distance</h4>
+      <mat-form-field floatLabel="always">
+        <mat-label></mat-label>
+        <input [(ngModel)]="pointOffset.distance" name="distance" autocomplete="off" matInput placeholder="In meters">
+      </mat-form-field>
+    </div>
+
+    <div class="input-container" fxLayout="row" fxLayoutAlign="left center">
+      <h4>Direction (deg)</h4>
+      <div fxLayout="row" fxLayoutGap="5px">
+        <div fxLayout="column" fxLayoutAlign="center">
+          <button class="button-direction" color="accent" mat-raised-button (click)="setDirection(270)">W</button>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center">
+          <button class="button-direction" color="accent" mat-raised-button (click)="setDirection(0)">N</button>
+          <mat-form-field id="input-direction" appearance="outline">
+            <mat-label></mat-label>
+            <input [(ngModel)]="pointOffset.direction" name="direction" autocomplete="off" matInput value="0">
+          </mat-form-field>
+          <button class="button-direction" color="accent" mat-raised-button (click)="setDirection(180)">S</button>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center">
+          <button class="button-direction" color="accent" mat-raised-button (click)="setDirection(90)">E</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-container">
+      <h4>Flight Altitude</h4>
+      <mat-form-field floatLabel="always">
+        <mat-label></mat-label>
+        <input [(ngModel)]="pointOffset.altitude" name="altitude" autocomplete="off" matInput [placeholder]="globalAltitude +' meters'">
+      </mat-form-field>
+      <button *ngIf="pointOffset.altitude" mat-icon-button color="accent" matTooltip="Unset"
+              (click)="pointOffset.altitude = null">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button id="button-move" mat-raised-button color="primary" (click)="onPositive()">Move</button>
+</div>

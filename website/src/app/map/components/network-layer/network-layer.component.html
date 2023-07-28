@@ -1,0 +1,61 @@
+<div>
+  <ac-layer #highlightLayer acFor="let highlight of highlights$" [context]="this">
+    <ac-point-desc props="{
+      heightReference: 2,
+      disableDepthTestDistance: highlight.disableDepthTestDistance,
+      position: highlight.position,
+      pixelSize: highlight.pixelSize,
+      color: highlight.color,
+    }">
+    </ac-point-desc>
+    <ac-polyline-desc props="{
+      width : 12,
+      positions: highlight.positions,
+      material: highlight.color,
+      clampToGround: highlight.clampToGround
+    }">
+    </ac-polyline-desc>
+  </ac-layer>
+
+  <ac-layer #markersLayer acFor="let marker of markers$" [context]="this">
+    <ac-point-desc props="{
+      heightReference: marker.heightReference,
+      position: marker.position,
+      pixelSize: 20,
+      color: marker.color
+    }">
+    </ac-point-desc>
+    <ac-label-desc props="{
+      heightReference: marker.heightReference,
+      position: marker.labelPos,
+      font: '17px sans-serif',
+      text: marker.text
+    }">
+    </ac-label-desc>
+  </ac-layer>
+
+  <ac-layer #linksLayer acFor="let link of links$" [context]="this">
+    <ac-polyline-desc props="{
+      width : 5,
+      positions: link.positions,
+      material: link.color
+    }">
+    </ac-polyline-desc>
+  </ac-layer>
+
+  <ac-layer #networkLayer acFor="let entity of networks$" [context]="this">
+    <ac-polyline-desc props="{
+      material: Cesium.Color.BLACK,
+      width : 5,
+      positions: entity.positions,
+      clampToGround: entity.clampToGround
+    }">
+    </ac-polyline-desc>
+  </ac-layer>
+
+  <polylines-editor #polylineEditor></polylines-editor>
+
+  <app-shape-menu #pointShapeMenu [items]="pointContextItems" (itemClicked)="onPointMenuItemClick($event)"
+                  [selfTrigger]="false">
+  </app-shape-menu>
+</div>

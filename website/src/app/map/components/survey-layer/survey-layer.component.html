@@ -1,0 +1,71 @@
+<ac-layer #pointsLayer acFor="let building of buildingsNotifications$" [context]="this">
+  <!--  for highlighting the actual point  -->
+  <ac-point-desc props="{
+         position: building.position,
+         pixelSize: 25,
+         heightReference: 2,
+         disableDepthTestDistance: building.disableDepthTestDistance,
+         color: building.highlightColor,
+         show: building.highlight,
+         zIndex: 1
+       }">
+  </ac-point-desc>
+  <!--  actual point  -->
+  <ac-point-desc props="{
+         position: building.position,
+         pixelSize: 10,
+         heightReference: 2,
+         disableDepthTestDistance: building.disableDepthTestDistance,
+         color: building.color,
+         outlineColor: Cesium.Color.YELLOW,
+         outlineWidth: 2,
+         zIndex: 2
+       }">
+  </ac-point-desc>
+</ac-layer>
+
+<ac-layer acFor="let polygon of polygons$" [context]="this">
+  <ac-polygon-desc props="{
+         hierarchy: polygon.hierarchy,
+         material: Cesium.Color.CORNFLOWERBLUE.withAlpha(0.4)
+       }">
+  </ac-polygon-desc>
+</ac-layer>
+
+<points-editor #pointEditor *ngIf="editingPoints"></points-editor>
+
+<app-polygon-layer #polygonEditor *ngIf="enablePolygonEditor"></app-polygon-layer>
+
+<app-shape-menu #pointShapeMenu [items]="pointContextItems"
+                (itemClicked)="onPointMenuItemClick($event)"
+                [selfTrigger]="false">
+</app-shape-menu>
+
+<app-shape-menu #polygonShapeMenu [items]="polygonContextItems"
+                (itemClicked)="onPolygonMenuItemClick($event)"
+                [selfTrigger]="false">
+</app-shape-menu>
+
+<ac-circle *ngIf="pointHighlightProps != null" [props]="{
+    position: pointHighlightProps.position,
+    radius: this.settingsService.settings.building_radius,
+    fill: false,
+    outline: true,
+    height: 0,
+    outlineColor: Cesium.Color.RED,
+    heightReference: pointHighlightProps.heightReference
+}">
+</ac-circle>
+
+<!--  <ac-layer #highlightLayer acFor="let highlight of highlights$" [context]="this">-->
+<!--    &lt;!&ndash;  for highlighting the actual point  &ndash;&gt;-->
+<!--    <ac-point-desc props="{-->
+<!--         position: highlight.position,-->
+<!--         pixelSize: 25,-->
+<!--         heightReference: 1,-->
+<!--         disableDepthTestDistance: highlight.disableDepthTestDistance,-->
+<!--         color: highlight.color,-->
+<!--         zIndex: 1-->
+<!--       }">-->
+<!--    </ac-point-desc>-->
+<!--  </ac-layer>-->
